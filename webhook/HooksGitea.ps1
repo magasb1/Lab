@@ -24,15 +24,27 @@ param(
 
 try {
 
-    $Path = "C:\Users\Admin\Documents\Lab\docs\Sites\localhost\content\test"
-    if (Test-Path $Path){
-        $ScriptBlock = {
-            Set-Location $Path
-            Start-Process "git.exe" -Wait -NoNewWindow -ArgumentList "pull"
+    # Run this task for spesific repo
+    if ($Repository -eq "admin/test") {
+        $LocalPath = "C:\Users\Admin\Documents\Lab\docs\Sites\localhost\content\"
+        $Repository = "test"
+        if (Test-Path $(Join-Path $LocalPath $Repository)){
+            $ScriptBlock = {
+                Set-Location $(Join-Path $LocalPath $Repository)
+                Start-Process "git.exe" -Wait -NoNewWindow -ArgumentList "pull"
+            }
+            Invoke-Command -ScriptBlock $ScriptBlock
+            Write-Output "$Repository ($CommitId) by $PusherUsername ($PusherEmail)"
+        } else {
+            $ScriptBlock = {
+                Set-Location $LocalPath
+                Start-Process "git.exe" -Wait -NoNewWindow -ArgumentList "clone"
+            }
+            Invoke-Command -ScriptBlock $ScriptBlock
         }
-        Invoke-Command -ScriptBlock $ScriptBlock
-        Write-Output "$Repository ($CommitId) by $PusherUsername ($PusherEmail)"
     }
+    
+    # Run task for all repos
     
 }
 catch {
