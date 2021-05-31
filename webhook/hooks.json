@@ -1,0 +1,71 @@
+[
+  {
+    "id": "gitea",
+    "execute-command": "C:/Windows/system32/WindowsPowerShell/v1.0/powershell.exe",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "string",
+        "name": "-ExecutionPolicy"
+      },
+      {
+        "source": "string",
+        "name": "Bypass"
+      },
+      {
+        "source": "string",
+        "name": "-File"
+      },
+      {
+        "source": "string",
+        "name": "C:\\Users\\Admin\\Documents\\Lab\\webhook\\HooksGitea.ps1"
+      },
+      {
+        "source": "payload",
+        "name": "repository.full_name"
+      },
+      {
+        "source": "payload",
+        "name": "after"
+      },
+      {
+        "source": "payload",
+        "name": "pusher.username"
+      },
+      {
+        "source": "payload",
+        "name": "pusher.email"
+      }
+    ],
+    "trigger-rule":
+    {
+      "and":
+      [
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "secret"
+            }
+          }
+        },
+        {
+          "match":
+          {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter":
+            {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+      ]
+    }
+  }
+]
